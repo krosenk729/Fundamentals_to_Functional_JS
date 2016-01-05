@@ -145,3 +145,50 @@ har();
 *returns* -->
 >>>"localscope"
 
+Once more...
+
+```js
+var scope = "global scope";
+function checkscope(){
+  var scope = "localscope";
+  function innerFunc(){
+    return scope;
+  }
+  return innerFunc;
+}
+```
+
+### Setup
+1. Create your parent function
+2. Define some variables in the parent's local scope
+3. Define a function inside the parent function (child function)
+4. Return that function from inside the parent
+
+```js
+var test = checkscope();
+```
+let's see what `test` holds:
+
+```js
+test; 
+```
+
+*returns* -->
+>>>function innerFunc(){
+  return scope;
+}
+
+Looks good. To call it, just use the invocation operator `()`
+
+```js
+test();
+```
+
+*returns* -->
+>>>"localscope"
+
+### Execution
+1. run parent function and save to variable. This variable will hold whatever that function RETURNS.
+2. *optional: check what that variable holds as a value. (It should be the inner function)*
+3. run the inner function 
+
