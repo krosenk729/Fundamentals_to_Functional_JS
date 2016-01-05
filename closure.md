@@ -192,3 +192,157 @@ test();
 2. *optional: check what that variable holds as a value. (It should be the inner function)*
 3. run the inner function 
 
+
+___
+
+# More CLOSURE(s) and CLOSURE notes
+
+```js
+var sayAlice = function(){
+
+  var makeLog = function(){
+    console.log(alice);
+  };
+
+  var alice = 'Why hello there, Alice!';
+  return makeLog;
+};
+
+var what = sayAlice();
+```
+### The browser is all like
+* Define a function called `sayAlice`
+  - Skip function body
+
+* Declare variable `what` 
+* assign it `sayAlice()`
+  - now go inside function body
+* Declare variable `makeLog`
+  - recognize that it's a function
+  - skip the body
+* Declare variable `alice`
+  - assign it the string "Why hello there, Alice!"
+* return `makeLog`
+  - go inside function body
+  - log the variable `alice`, which we just defined. 
+  - Print string to the console
+
+
+```js
+what();
+```
+
+*returns* -->
+>>>"Why hello there, Alice!"
+
+___
+
+```js
+var makeStopwatch = function(){
+
+  console.log('initialized');
+  var elapsed = 0;
+  console.log(elapsed);
+
+  var stopwatch = function(){
+    console.log('stopwatch');
+    return elapsed;
+  };
+
+  var increase = function(){
+    elapsed++;
+  }
+
+  setInterval(increase, 1000);
+
+  return stopwatch;
+};
+
+var x = makeStopwatch();
+x();
+```
+
+___
+
+## Add to Number
+
+```js
+var add = function( num ){
+  var num1 = num;
+  var addToNum1 = function( num2 ){
+    return num1 + num2;
+  };
+  return adToNum1;
+};
+
+
+var add5 = add(5);
+
+```
+
+`add` returns the entire function. 
+`add()` returns the inner function `addToNum1()`  
+
+To make use of this, it needs a variable to act as a handler.  
+I think this variable that refers to our inner/outer function is what is specifically called the 'closure'.  
+
+```js
+var add5 = add(5);
+```
+`add5` is our closure. Here, it's invoked, passing 5 as `num1`.  
+Now it's a function that can actually do something. Whatever is passed into `add5()` will be `num2`.
+
+```js
+add5(4);
+```
+
+*returns* -->
+>>> 9
+
+```js
+add5(20);
+```
+
+*returns* -->
+>>> 25
+
+## NOTE
+The only thing `add()` is capable of is returning `addToNum1()`.  Passing numbers into it returns the exact same result. 
+
+```js
+add(9);
+```
+
+*returns* -->
+>>> function addToNum1(num2){
+>>>   
+>>> }
+
+It also doesn't seem to make a difference if you use function declarations. This might have some different effects with regards to hoisting. 
+
+```js
+function add (num) {
+  var num1 = num;
+  function addToNum1 (num2) {
+    return num1 + num2;
+  }
+  return addToNum1;
+}
+```
+Works exactly the same as above. But it needs the closure. On it's own it is pretty useless. 
+
+```js
+var add5 = add(5);
+```
+We've got a function called `add5()` now. 5 is sewn up inside as it's `num1`
+Now we've got ourselves a sweet little closure that adds 5 to stuff. Super useful. Add 5 to everything.
+
+### The only purpose of the outer function is to return the inner function.
+
+It's job is to pass the inner function (which retains access to previous enviornment/scope.  
+
+
+
+___
+
+
