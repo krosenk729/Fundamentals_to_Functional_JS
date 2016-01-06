@@ -341,8 +341,196 @@ Now we've got ourselves a sweet little closure that adds 5 to stuff. Super usefu
 
 It's job is to pass the inner function (which retains access to previous enviornment/scope.  
 
+___
+
+# CLOSURE EXERCISES
+
+```js
+function nonsense(string){
+    var blab = function(){
+        alert(string)
+    }
+    blab();
+}
+```
+
+Alerts, but `string` is undefined.
+
+```js
+function nonsense(string){
+    var blab = function(){
+        alert(string);
+    };
+        setTimeout(blab, 2000);
+}
+```
+
+Waits two seconds before alerting, but string is still undefined.
+
+```js
+function nonsense(string){
+    var blab = function(){
+        alert(string)
+    }
+    return blab;
+}
+```
+
+`nonsense()` calls `blab()`
+
+```js
+var blabLater = nonsense("trigitty-troggity! Up on the fence sayin nonsense!");
+var blabAgainLater = blabLater("picture me! JUS' chewin on some bubbleYum!");
+```
+
+
+```js
+blabLater();
+```
+
+*returns* -->
+>>>trigitty-troggity! Up on the fence sayin nonsense!
+
+```js
+blabAgainLater();
+```
+
+*returns* -->
+>>>Uncaught TypeError: blabAgainLater is not a function
+
+___
+## travis's custom closure
+Write a function with a closure. The first function should only take one argument, someone's first name, and the inner function should take one more argument, someone's last name. The inner function should console.log both the first name and the last name.
+
+```js
+function outerScope(firstName){
+  function innerScope(lastName){
+    console.log(firstName + " " + lastName);
+  }
+  return innerScope;
+}
+```
+
+`outerScope()` calls `innerScope()` and that is all it can do. 
+
+```js
+var nameThing = outerScope("Travis");
+```
+
+*returns* -->
+>>>Travis Undefined
+
+```js
+nameThing("Gorman");
+```
+
+*returns* -->
+>>>Travis Gorman
+
+
+```js
+nameThing('Finnigan');
+```
+
+*returns* -->
+>>>Travis Finnigan
+
+___
+
+# example story function 
+
+
+```js
+function storyWriter(){
+    var story = "";
+    return {
+         addWords : function addWords(word){ story += word; return story; },
+         erase : function(){ story = ""; } 
+           }
+}
+```
+
+```js
+var farmLoveStory = storyWriter();
+farmLoveStory.addWords("there once was a lonely cow. ");
+farmLoveStory.addWords("It saw a friendly face.");
+
+var storyOfMyLife = storyWriter();
+storyOfMyLife.addWords('my code broke. ');
+storyOfMyLife.addWords('I ate some ice cream. ');
+```
+
+*returns* -->
+>>>'my code broke. I ate some ice cream.'
+
+
+```js
+storyOfMyLife.erase();
+```
+
+*returns* -->
+>>>undefined
+
+
+```js
+farmLoveStory();
+```
+
+*returns* -->
+>>>Uncaught TypeError: farmLoveStory is not a function(…)
+
+
+
+* the closure holds the function that returns an object.  
+* The closure can then call on methods on that object. 
+
+## Using the module pattern, DESIGN A TOASTER.  
+
+Use your creativity here and think about what you want your users to be able to access on the outside of your toaster vs what you don't want them to be able to touch.
+
+
+```js
+var Toaster = function (){
+    // some private methods and properties
+        return {
+            // some public methods and properties, etc
+        }
+}
+```
+
+
+#### Extra Credit
+## Use the module pattern to DESIGN A CHARACTER in a Super Mario game. 
+
+Think about what actions you can control in the game and other aspects you can't control directly (example: you can only affect your health indirectly by eating a mushroom). If you are not familiar with Super Mario, choose another simple game for this example.
+
 
 
 ___
 
+# Extra Credit
+Why doesn't the code below work? This is a function that should return an array of functions that console.log() each person's name as a string when invoked. Fiddle with this function and inspect how it works, then try to fix it using a closure. Be prepared to explain to a partner how it worked before, and how it works now with a closure.
+
+```js
+var checkAttendanceFunc = function(nameArr){
+    var resultArr = [];
+    for(var i = 0; i < nameArr.length; i++){
+        resultArr.push(function(){ console.log('Is', nameArr[i], 'present?', i)})
+    };
+    return resultArr;
+};
+```
+
+
+
+
+___
+# Extra Credit
+Write a function that takes another function* as an argument and creates a version of the function that can only be called one time. 
+
+Repeated calls to the modified function will have no effect, returning the value from the original call. How could you do this without using a closure? Is it even possible? How could you do this with a closure? *Note: This original input function should not have any parameters.
+
+
+
+___
 
